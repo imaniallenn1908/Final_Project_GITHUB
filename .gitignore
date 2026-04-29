@@ -1,5 +1,3 @@
-*.rds
-*.csv
 *.html
 *.docx
 .Rproj.user
