@@ -17,7 +17,7 @@ opts_chunk$set(
 library(readr)
 library(dplyr)
 
-data = readRDS("~/Desktop/DATA 550/final/code/data.rds")
+data = readRDS("code/data.rds")
 ```
 
 # Introduction
