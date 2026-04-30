@@ -16,10 +16,11 @@ opts_chunk$set(
 ```{r load-data}
 df <- readRDS("code/data.rds")
 
-class(df)
-str(df)
+print(class(df))
 
 df <- as.data.frame(df)
+
+stopifnot(is.data.frame(df))
 ```
 
 # Introduction
