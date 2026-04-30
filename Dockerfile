@@ -1,16 +1,14 @@
-FROM debian:bookworm-slim
+FROM rocker/r-ver:4.4.1
 
 #set working directory
 WORKDIR /final
 
 #system dependencies 
 RUN apt-get update && apt-get install -y \
-    r-base \
-    r-base-dev \
-    libcurl4 \
-    libssl3 \
-    libxml2 \
-    make \
+    libcurl4-openssl-dev \
+    libssl-dev \
+    libxml2-dev \
+    curl \
     && rm -rf /var/lib/apt/lists/*
 
 #install renv
@@ -27,7 +25,7 @@ COPY *.Rmd ./
 COPY *.R ./
 
 #restore all packages from renv.lock 
-RUN R -e "renv::restore(prompt = FALSE)"
+RUN R -e "options(repos = c(CRAN = 'https://cloud.r-project.org')); renv::restore(prompt = FALSE)"
 
 #run Rscripts to make report
 RUN Rscript code/load_data.R && \
