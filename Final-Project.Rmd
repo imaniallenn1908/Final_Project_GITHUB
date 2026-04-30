@@ -14,35 +14,39 @@ opts_chunk$set(
 ```
 
 ```{r load-data}
-code <- readRDS("code/data.rds")
+report_data <- readRDS("code/data.rds")
 
-print(class(code))
+print(class(report_data))
 
-code <- as.data.frame(code)
+report_data <- as.data.frame(report_data)
 
-stopifnot(is.data.frame(code))
+stopifnot(is.data.frame(report_data))
 ```
 
 # Introduction
-The CDC's Disability and Health Data System (DHDS) is a public data frame with `r nrow(code)` observations and `r ncol(code)` variables and is sourced from the Behavioral Risk Factor Surveillance System (BRFSS). DHDS includes various health indicators and demographics for the six functional disability types in the United States (cognitive, hearing, independent living, vision, mobility, and self-care). DHDS is updated annually with current datasets, questionnaires, code-books, etc. 
+
+The CDC's Disability and Health Data System (DHDS) is a public data frame with `r nrow(report_data)` observations and `r ncol(report_data)` variables and is sourced from the Behavioral Risk Factor Surveillance System (BRFSS). DHDS includes various health indicators and demographics for the six functional disability types in the United States (cognitive, hearing, independent living, vision, mobility, and self-care). DHDS is updated annually with current datasets, questionnaires, code-books, etc.
 
 ## Data Types
-DHDS integrates both qualitative and quantitative data types for analysis. Nationally representative surveys account for the primary quantitative data, while in-depth interviews were supplemented in as secondary data. 
+
+DHDS integrates both qualitative and quantitative data types for analysis. Nationally representative surveys account for the primary quantitative data, while in-depth interviews were supplemented in as secondary data.
 
 ## Analysis Objectives
-* Visualization of differences in disability and risk prevalence at the state-level can identify health disparities among adults with and without disabilities. 
-* Findings from DHDS can be utilized in the public health sector to evaluate the needs of adults living with disabilities, influencing advocacy efforts and policy reform. 
 
+-   Visualization of differences in disability and risk prevalence at the state-level can identify health disparities among adults with and without disabilities.
+-   Findings from DHDS can be utilized in the public health sector to evaluate the needs of adults living with disabilities, influencing advocacy efforts and policy reform.
 
 # Descriptive Analysis
 
 ## Table 1 Statistics
-The following table represents descriptive statistics for participant location, disability status, and key demographic characteristics among adults ages 18+ who ever reported having heart disease. 
+
+The following table represents descriptive statistics for participant location, disability status, and key demographic characteristics among adults ages 18+ who ever reported having heart disease.
+
 ```{r table-1}
 library(gtsummary)
 library(stringr)
 
-table_data <- code
+table_data <- report_data
 
 table_data <- table_data[
   table_data$Indicator == "Ever had heart disease among adults 18 years of age or older" &
@@ -63,12 +67,14 @@ gtsummary::tbl_summary(
   gtsummary::modify_header(all_stat_cols() ~ "**Prevalence**")
 ```
 
-## Graphical Analysis 
+## Graphical Analysis
+
 Reported below is a stacked bar chart of disability type across participant location
+
 ```{r plot-data, fig.width=20, fig.height=18}
 library(ggplot2)
 
-plot_df = code %>%
+plot_df = report_data %>%
   filter(!is.na(Stratification1),
          !is.na(LocationID),
          !str_starts(LocationDesc, "HHS")) %>%
