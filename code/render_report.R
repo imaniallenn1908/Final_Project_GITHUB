@@ -1,6 +1,6 @@
 here::i_am("code/render_report.R")
 
 rmarkdown::render(
-  input = "Final-Project.Rmd",
-  output_dir = "../report"
+  input = "code/Final-Project.Rmd",
+  output_dir = "report"
 )
