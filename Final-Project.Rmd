@@ -14,10 +14,11 @@ opts_chunk$set(
 ```
 
 ```{r load-data}
-library(readr)
-library(dplyr)
+rm(list = ls())
 
-df = readRDS("code/data.rds")
+df <- readRDS("code/data.rds")
+
+stopifnot(is.data.frame(df))
 ```
 
 # Introduction
