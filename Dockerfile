@@ -23,7 +23,7 @@ COPY renv/activate.R renv/activate.R
 
 #copy code and other relevant files
 COPY code/ code/
-COPY data.rds data.rds
+COPY code/data.rds code/data.rds
 COPY *.R ./
 COPY Final-Project.Rmd /final/
 
