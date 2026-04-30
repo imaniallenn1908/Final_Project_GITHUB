@@ -1,25 +1,51 @@
 # Code Description
 
+1. Data Processing
 `code/load_data`
-- Loads and saves dataset as data.rds
+- Loads the raw dataset
+- Cleans and processes the data
+- Saves the processed dataset as `data.rds`
 
-`code/reder_report`
-- Renders final Rmardown and saves as Final-Project.html
+2. Report Generation
+`code/render_report`
+- Reads `data.rds` and renders the final R Markdown report `Final-Project.Rmd`
+- Final report output will be `Final-Report.html`
 
+# Reproducibility with Docker
+This project is fully reproducible using Docker. The Docker image contains 
+all required system dependencies, R packages, and project files needed to
+generate the report. 
 
-#Package Synchronization
+# Build Docker Image
+In the terminal type 
+docker build -t imaniallenn1908/final-project .
+
+# Pull from DockerHub
+In the terminal type 
+docker pull imaniallenn1908/final-project
+
+# Running the Automted Report
+The Makefile includes a `report` target that runs the full pipeline
+inside a Docker container. 
+
+`make report` in the terminal does the following:
+- Creates an empty `report/` directory in the project folder
+- Runs the Docker container using the project image
+- Mounts the local `report/` folder into the container
+- Saves the final HTML report to `report/Final-Project.html`
+
+# Package Synchronization (`renv`)
+This project uses `renv` to manage R package versions.
+
 `renv.lock`
-- All package files are stored in the renv.lock file.
-To ensure all correct package files / versions are installed
-type `getwd()` in the R console to check which directiory 
-you're in. Use `setwd()` to set working directory to the 
-correct R project directory (should be "final").
+- Stores all package names and versions required for the project 
 
-- In the terminal type `make install` to load all package 
-files / versions. 
+# Install Packages Locally (Optional)
+`make install` in the terminal will install packages locally (optional)
+- Ensure your working directory is set to `final`
+- Check with: `getwd()`
+- If needed, `setwd("path/to/final")` can be run
 
-- If new packages are installed type `renv::status()` into
-the R console. If synchronized, there are no further steps.
-
-- Type `renv::snapshot()` into the console to update the 
-renv.lock file. 
+# Updating Packages
+If new packages are added use `renv::status()` followed by `renv::snapshot()`
+This will update the `renv.lock` file to maintain reproducibility.
