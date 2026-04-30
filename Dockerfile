@@ -4,7 +4,7 @@ FROM rocker/r-ver:4.4.1
 WORKDIR /final
 
 #system dependencies 
-RUN RUN apt-get update && apt-get install -y \
+RUN apt-get update && apt-get install -y \
     libcurl4-openssl-dev \
     libssl-dev \
     libxml2-dev \
