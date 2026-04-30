@@ -14,17 +14,17 @@ opts_chunk$set(
 ```
 
 ```{r load-data}
-dat <- readRDS("code/data.rds")
+code <- readRDS("code/data.rds")
 
-print(class(dat))
+print(class(code))
 
-dat <- as.data.frame(dat)
+code <- as.data.frame(code)
 
-stopifnot(is.data.frame(dat))
+stopifnot(is.data.frame(code))
 ```
 
 # Introduction
-The CDC's Disability and Health Data System (DHDS) is a public data frame with `r nrow(dat)` observations and `r ncol(dat)` variables and is sourced from the Behavioral Risk Factor Surveillance System (BRFSS). DHDS includes various health indicators and demographics for the six functional disability types in the United States (cognitive, hearing, independent living, vision, mobility, and self-care). DHDS is updated annually with current datasets, questionnaires, code-books, etc. 
+The CDC's Disability and Health Data System (DHDS) is a public data frame with `r nrow(code)` observations and `r ncol(code)` variables and is sourced from the Behavioral Risk Factor Surveillance System (BRFSS). DHDS includes various health indicators and demographics for the six functional disability types in the United States (cognitive, hearing, independent living, vision, mobility, and self-care). DHDS is updated annually with current datasets, questionnaires, code-books, etc. 
 
 ## Data Types
 DHDS integrates both qualitative and quantitative data types for analysis. Nationally representative surveys account for the primary quantitative data, while in-depth interviews were supplemented in as secondary data. 
@@ -42,7 +42,7 @@ The following table represents descriptive statistics for participant location, 
 library(gtsummary)
 library(stringr)
 
-table_data <- df
+table_data <- code
 
 table_data <- table_data[
   table_data$Indicator == "Ever had heart disease among adults 18 years of age or older" &
@@ -68,7 +68,7 @@ Reported below is a stacked bar chart of disability type across participant loca
 ```{r plot-data, fig.width=20, fig.height=18}
 library(ggplot2)
 
-plot_df = dat %>%
+plot_df = code %>%
   filter(!is.na(Stratification1),
          !is.na(LocationID),
          !str_starts(LocationDesc, "HHS")) %>%
