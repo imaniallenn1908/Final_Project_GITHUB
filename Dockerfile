@@ -4,11 +4,13 @@ FROM rocker/r-ver:4.4.1
 WORKDIR /final
 
 #system dependencies 
-RUN apt-get update && apt-get install -y \
+RUN RUN apt-get update && apt-get install -y \
     libcurl4-openssl-dev \
     libssl-dev \
     libxml2-dev \
     curl \
+    ca-certificates \
+    pandoc \
     && rm -rf /var/lib/apt/lists/*
 
 #install renv
