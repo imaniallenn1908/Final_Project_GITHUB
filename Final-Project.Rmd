@@ -17,7 +17,7 @@ opts_chunk$set(
 library(readr)
 library(dplyr)
 
-data = readRDS("code/data.rds")
+df = readRDS("code/data.rds")
 ```
 
 # Introduction
@@ -40,7 +40,7 @@ library(gtsummary)
 library(stringr)
 library(dplyr)
 
-data %>%
+df %>%
   filter(
     Indicator == "Ever had heart disease among adults 18 years of age or older",
     !is.na(Stratification1),
@@ -62,7 +62,7 @@ Reported below is a stacked bar chart of disability type across participant loca
 ```{r plot-data, fig.width=20, fig.height=18}
 library(ggplot2)
 
-plot_df = data %>%
+plot_df = df %>%
   filter(!is.na(Stratification1),
          !is.na(LocationID),
          !str_starts(LocationDesc, "HHS")) %>%
