@@ -40,6 +40,7 @@ The following table represents descriptive statistics for participant location, 
 ```{r table-1}
 library(gtsummary)
 library(stringr)
+library(dplyr)
 
 table_data <- df %>%
   dplyr::filter(
@@ -51,15 +52,13 @@ table_data <- df %>%
   ) %>%
   dplyr::select(LocationDesc, Stratification1, Stratification2)
 
-stopifnot(is.data.frame(table_data))
-
-tbl_summary(
+gtsummary::tbl_summary(
   table_data,
   percent = "column",
   statistic = all_categorical() ~ "{p}%",
   missing = "no"
 ) %>%
-  modify_header(all_stat_cols() ~ "**Prevalence**")
+  gtsummary::modify_header(all_stat_cols() ~ "**Prevalence**")
 ```
 
 ## Graphical Analysis 
