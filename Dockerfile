@@ -28,5 +28,5 @@ COPY *.R ./
 RUN R -e "options(repos = c(CRAN = 'https://cloud.r-project.org')); renv::restore(prompt = FALSE)"
 
 #run Rscripts to make report
-RUN Rscript code/load_data.R && \
-  Rscript code/render_report.R
+RUN Rscript code/load_data.R
+RUN Rscript code/render_report.R
