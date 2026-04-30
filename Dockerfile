@@ -22,10 +22,9 @@ COPY renv/activate.R renv/activate.R
 
 
 #copy code and other relevant files
-COPY code/ code/
-COPY code/data.rds code/data.rds
-COPY *.R ./
+COPY code/ /final/code/
 COPY Final-Project.Rmd /final/
+COPY *.R /final/
 
 #restore all packages from renv.lock 
 RUN R -e "options(repos = c(CRAN = 'https://cloud.r-project.org')); renv::restore(prompt = FALSE)"
