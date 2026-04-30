@@ -1,5 +1,4 @@
 here::i_am("code/load_data.R")
-
-readRDS("code/data.rds")
-
+data <- load_data()
+stopifnot(is.data.frame(data))
 saveRDS(data, file = "/final/code/data.rds")
