@@ -22,13 +22,12 @@ COPY renv/activate.R renv/activate.R
 
 
 #copy code and other relevant files
-COPY code/ /final/code/
-COPY Final-Project.Rmd /final/
-COPY *.R /final/
+COPY code/ code/
+COPY Makefile Makefile
 
 #restore all packages from renv.lock 
-RUN R -e "options(repos = c(CRAN = 'https://cloud.r-project.org')); renv::restore(prompt = FALSE)"
+RUN R -e "options(repos = c(CRAN = 'https://cloud.r-project.org')); \
+          renv::restore(prompt = FALSE, library = .Library)"
 
 #run Rscripts to make report
-RUN Rscript code/load_data.R
-RUN Rscript code/render_report.R
+RUN Rscript -e "source('code/load_data.R'); source('code/render_report.R')"
