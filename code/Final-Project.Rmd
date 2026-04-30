@@ -1,0 +1,98 @@
+---
+title: 'Final Project'
+author: "Imani Allen"
+date: "2026-02-19"
+output:
+  html_document: default
+---
+
+```{r, set-chunk-opts, echo = FALSE}
+library(knitr)
+opts_chunk$set(
+  echo = FALSE, warning = FALSE, message = FALSE
+)
+```
+
+```{r load-data}
+report_data <- readRDS("/final/code/data.rds")
+
+print(class(report_data))
+
+report_data <- as.data.frame(report_data)
+
+stopifnot(is.data.frame(report_data))
+```
+
+# Introduction
+
+The CDC's Disability and Health Data System (DHDS) is a public data frame with `r nrow(report_data)` observations and `r ncol(report_data)` variables and is sourced from the Behavioral Risk Factor Surveillance System (BRFSS). DHDS includes various health indicators and demographics for the six functional disability types in the United States (cognitive, hearing, independent living, vision, mobility, and self-care). DHDS is updated annually with current datasets, questionnaires, code-books, etc.
+
+## Data Types
+
+DHDS integrates both qualitative and quantitative data types for analysis. Nationally representative surveys account for the primary quantitative data, while in-depth interviews were supplemented in as secondary data.
+
+## Analysis Objectives
+
+-   Visualization of differences in disability and risk prevalence at the state-level can identify health disparities among adults with and without disabilities.
+-   Findings from DHDS can be utilized in the public health sector to evaluate the needs of adults living with disabilities, influencing advocacy efforts and policy reform.
+
+# Descriptive Analysis
+
+## Table 1 Statistics
+
+The following table represents descriptive statistics for participant location, disability status, and key demographic characteristics among adults ages 18+ who ever reported having heart disease.
+
+```{r table-1}
+library(gtsummary)
+library(stringr)
+
+table_data <- report_data
+
+table_data <- table_data[
+  table_data$Indicator == "Ever had heart disease among adults 18 years of age or older" &
+    !is.na(table_data$Stratification1) &
+    !is.na(table_data$Stratification2) &
+    !is.na(table_data$LocationDesc) &
+    !stringr::str_starts(table_data$LocationDesc, "HHS"),
+]
+
+table_data <- table_data[, c("LocationDesc", "Stratification1", "Stratification2")]
+
+gtsummary::tbl_summary(
+  table_data,
+  percent = "column",
+  statistic = all_categorical() ~ "{p}%",
+  missing = "no"
+) %>%
+  gtsummary::modify_header(all_stat_cols() ~ "**Prevalence**")
+```
+
+## Graphical Analysis
+
+Reported below is a stacked bar chart of disability type across participant location
+
+```{r plot-data, fig.width=20, fig.height=18}
+library(ggplot2)
+
+plot_df = report_data %>%
+  filter(!is.na(Stratification1),
+         !is.na(LocationID),
+         !str_starts(LocationDesc, "HHS")) %>%
+  count(LocationDesc, Stratification1) %>%
+  group_by(LocationDesc) %>%
+  mutate(prop = n/sum(n)) %>%
+  ungroup()
+
+ggplot(plot_df, aes(x = LocationDesc, y = prop, fill = Stratification1)) +
+  geom_bar(stat = "identity", width = 0.7) +
+  geom_text(aes(label = scales::percent(prop, accuracy = 1)),
+            position = position_stack(vjust = 0.5),
+            size = 2.5) +
+  coord_flip() +
+  labs(
+    x = "State",
+    y = "Proportion",
+    fill = "Disability Type",
+    title = "Distributon of Disability Types by State"
+  )
+```
