@@ -59,22 +59,7 @@ data %>%
     statistic = all_categorical() ~ "{p}%",
     missing = "no"
   ) %>%
-  modify_header(all_stat_cols() ~ "**Prevalence**") %>%
-  modify_table_body(
-    ~ .x %>%
-      mutate(
-        label = case_when(
-          label %in% c("Black, non-Hispanic", "White, non-Hispanic",
-                       "Hispanic", "Other / Multirace, non-Hispanic") ~ paste0("Race: ", label),
-
-          label %in% c("Male", "Female") ~ paste0("Sex: ", label),
-
-          label %in% c("18-44", "45-64", "65+") ~ paste0("Age Group: ", label),
-
-          TRUE ~ label
-        )
-      )
-  )
+  modify_header(all_stat_cols() ~ "**Prevalence**")
 ```
 
 ## Graphical Analysis 
