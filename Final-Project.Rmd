@@ -14,7 +14,7 @@ opts_chunk$set(
 ```
 
 ```{r load-data}
-report_data <- readRDS(here::here("code", "data.rds"))
+report_data <- readRDS("/final/code/data.rds")
 
 print(class(report_data))
 
