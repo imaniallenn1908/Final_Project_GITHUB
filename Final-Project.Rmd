@@ -39,20 +39,21 @@ The following table represents descriptive statistics for participant location, 
 library(labelled)
 library(gtsummary)
 library(stringr)
+library(dplyr)
 
-var_label(data) = list(
-  LocationDesc = "State",
-  Stratification1 = "Disability Status",
-  Stratification2 = "Demographics"
-)
+var_label(data$LocationDesc) <- "State"
+var_label(data$Stratification1) <- "Disability Status"
+var_label(data$Stratification2) <- "Demographics"
 
 data %>%
-  filter(Indicator == "Ever had heart disease among adults 18 years of age or older",
-         !is.na(Stratification1),
-         !is.na(Stratification2),
-         !is.na(LocationDesc),
-         !str_starts(LocationDesc, "HHS")) %>%
-  select("LocationDesc", "Stratification1", "Stratification2") %>%
+  filter(
+    Indicator == "Ever had heart disease among adults 18 years of age or older",
+    !is.na(Stratification1),
+    !is.na(Stratification2),
+    !is.na(LocationDesc),
+    !str_starts(LocationDesc, "HHS")
+  ) %>%
+  select(LocationDesc, Stratification1, Stratification2) %>%
   tbl_summary(
     percent = "column",
     statistic = all_categorical() ~ "{p}%",
@@ -63,18 +64,17 @@ data %>%
     ~ .x %>%
       mutate(
         label = case_when(
-          label %in% c("Black, non-Hispanic", "White, non-Hispanic", "Hispanic", "Other / Multirace, non-Hispanic") ~
-          paste0("Race: ", label),
-        
-          label %in% c("Male", "Female") ~
-            paste0("Sex: ", label),
-          
-          label %in% c("18-44", "45-64", "65+") ~
-            paste0("Age Group: ", label),
-          
+          label %in% c("Black, non-Hispanic", "White, non-Hispanic",
+                       "Hispanic", "Other / Multirace, non-Hispanic") ~ paste0("Race: ", label),
+
+          label %in% c("Male", "Female") ~ paste0("Sex: ", label),
+
+          label %in% c("18-44", "45-64", "65+") ~ paste0("Age Group: ", label),
+
           TRUE ~ label
+        )
       )
-  ))
+  )
 ```
 
 ## Graphical Analysis 
