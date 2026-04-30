@@ -14,17 +14,17 @@ opts_chunk$set(
 ```
 
 ```{r load-data}
-df <- readRDS("code/data.rds")
+dat <- readRDS("code/data.rds")
 
-print(class(df))
+print(class(dat))
 
-df <- as.data.frame(df)
+dat <- as.data.frame(dat)
 
-stopifnot(is.data.frame(df))
+stopifnot(is.data.frame(dat))
 ```
 
 # Introduction
-The CDC's Disability and Health Data System (DHDS) is a public data frame with `r nrow(df)` observations and `r ncol(df)` variables and is sourced from the Behavioral Risk Factor Surveillance System (BRFSS). DHDS includes various health indicators and demographics for the six functional disability types in the United States (cognitive, hearing, independent living, vision, mobility, and self-care). DHDS is updated annually with current datasets, questionnaires, code-books, etc. 
+The CDC's Disability and Health Data System (DHDS) is a public data frame with `r nrow(dat)` observations and `r ncol(dat)` variables and is sourced from the Behavioral Risk Factor Surveillance System (BRFSS). DHDS includes various health indicators and demographics for the six functional disability types in the United States (cognitive, hearing, independent living, vision, mobility, and self-care). DHDS is updated annually with current datasets, questionnaires, code-books, etc. 
 
 ## Data Types
 DHDS integrates both qualitative and quantitative data types for analysis. Nationally representative surveys account for the primary quantitative data, while in-depth interviews were supplemented in as secondary data. 
@@ -43,7 +43,7 @@ library(gtsummary)
 library(stringr)
 
 table_data <- dplyr::filter(
-  df,
+  dat,
   Indicator == "Ever had heart disease among adults 18 years of age or older",
   !is.na(Stratification1),
   !is.na(Stratification2),
@@ -70,7 +70,7 @@ Reported below is a stacked bar chart of disability type across participant loca
 ```{r plot-data, fig.width=20, fig.height=18}
 library(ggplot2)
 
-plot_df = df %>%
+plot_df = dat %>%
   filter(!is.na(Stratification1),
          !is.na(LocationID),
          !str_starts(LocationDesc, "HHS")) %>%
