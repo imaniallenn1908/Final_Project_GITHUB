@@ -36,14 +36,9 @@ DHDS integrates both qualitative and quantitative data types for analysis. Natio
 ## Table 1 Statistics
 The following table represents descriptive statistics for participant location, disability status, and key demographic characteristics among adults ages 18+ who ever reported having heart disease. 
 ```{r table-1}
-library(labelled)
 library(gtsummary)
 library(stringr)
 library(dplyr)
-
-var_label(data$LocationDesc) <- "State"
-var_label(data$Stratification1) <- "Disability Status"
-var_label(data$Stratification2) <- "Demographics"
 
 data %>%
   filter(
