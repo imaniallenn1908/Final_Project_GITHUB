@@ -74,6 +74,7 @@ Reported below is a stacked bar chart of disability type across participant loca
 ```{r plot-data, fig.width=20, fig.height=18}
 library(ggplot2)
 library(dplyr)
+library(stringr)
 
 plot_df = report_data %>%
   filter(!is.na(Stratification1),
