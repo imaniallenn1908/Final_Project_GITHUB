@@ -42,26 +42,24 @@ The following table represents descriptive statistics for participant location, 
 library(gtsummary)
 library(stringr)
 
-table_data <- dplyr::filter(
-  dat,
-  Indicator == "Ever had heart disease among adults 18 years of age or older",
-  !is.na(Stratification1),
-  !is.na(Stratification2),
-  !is.na(LocationDesc),
-  !stringr::str_starts(LocationDesc, "HHS")
-)
+table_data <- df
 
-table_data <- dplyr::select(
-  table_data,
-  LocationDesc, Stratification1, Stratification2
-)
+table_data <- table_data[
+  table_data$Indicator == "Ever had heart disease among adults 18 years of age or older" &
+    !is.na(table_data$Stratification1) &
+    !is.na(table_data$Stratification2) &
+    !is.na(table_data$LocationDesc) &
+    !stringr::str_starts(table_data$LocationDesc, "HHS"),
+]
+
+table_data <- table_data[, c("LocationDesc", "Stratification1", "Stratification2")]
 
 gtsummary::tbl_summary(
   table_data,
   percent = "column",
   statistic = all_categorical() ~ "{p}%",
   missing = "no"
-) |>
+) %>%
   gtsummary::modify_header(all_stat_cols() ~ "**Prevalence**")
 ```
 
